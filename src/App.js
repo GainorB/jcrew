@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 // COMPONENTS
 import Header from './components/Header';
 import Home from './components/Home';
+import Products from './components/Products';
 // CSS
 import './App.css';
 import { Navigation, NavItem } from './components/Styled';
@@ -29,7 +30,7 @@ class App extends Component {
         method: 'GET',
       });
       const { nav } = await request.json();
-      this.setStateAsync({ navLoaded: true, navItems: nav.map(n => n.label) });
+      this.setStateAsync({ navLoaded: true, navItems: nav[0].navGroups[0].navItems });
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +38,8 @@ class App extends Component {
 
   buildNav = () => {
     const { navItems } = this.state;
-    const output = navItems.map(n => <NavItem key={v1()}>{n}</NavItem>);
+    console.log('navItems', navItems);
+    const output = navItems.map(n => <NavItem key={v1()}>{n.label}</NavItem>);
 
     return <Navigation>{output}</Navigation>;
   };
