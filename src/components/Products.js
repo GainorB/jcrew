@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+// UTILS
+import { key } from './utils';
+
+// CSS
+import { ProductsWrapper, ProductDetails } from './Styled';
+
 class Products extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
@@ -8,7 +14,7 @@ class Products extends Component {
 
   state = {
     productsLoaded: false,
-    products: null,
+    productList: null,
   };
 
   componentDidMount = async () => {
@@ -24,7 +30,7 @@ class Products extends Component {
         method: 'GET',
       });
       const { productList } = await request.json();
-      this.setStateAsync({ productsLoaded: true, products: productList });
+      this.setStateAsync({ productsLoaded: true, productList });
     } catch (error) {
       console.log('error', error);
     }
@@ -50,14 +56,30 @@ class Products extends Component {
     }
   };
 
-  parseProducts = products => {
-    console.log(products);
+  parseProducts = productList => {
+    console.log('productList', productList);
+    const output = productList.map(e =>
+      e.products.map(p => (
+        <ProductDetails key={key()}>
+          <div>
+            <img
+              src={`https://www.jcrew.com/s7-img-facade/${p.productCode}_${p.defaultColorCode}_d1`}
+              alt={p.productDescription}
+            />
+          </div>
+          <div>{p.brand}</div>
+          <div>{p.listPrice.formatted}</div>
+          <div>{p.productDescription}</div>
+        </ProductDetails>
+      ))
+    );
+    return <ProductsWrapper>{output}</ProductsWrapper>;
   };
 
   render() {
-    const { products, productsLoaded } = this.state;
+    const { productList, productsLoaded } = this.state;
     if (!productsLoaded) return <div>Products Loading..</div>;
-    return <div>{productsLoaded && this.parseProducts(products)}</div>;
+    return <div>{productsLoaded && this.parseProducts(productList)}</div>;
   }
 }
 
