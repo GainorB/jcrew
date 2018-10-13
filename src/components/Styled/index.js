@@ -1,4 +1,4 @@
 import { Navigation, NavItem } from './Nav';
-import { ProductsWrapper, ProductDetails } from './Products';
+import { ProductsWrapper, ProductDetails, SingleProduct } from './Products';
 
-export { Navigation, NavItem, ProductsWrapper, ProductDetails };
+export { Navigation, NavItem, ProductsWrapper, ProductDetails, SingleProduct };

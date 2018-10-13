@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 // UTILS
 import { key } from './utils';
@@ -58,27 +59,30 @@ class Products extends Component {
   };
 
   parseProducts = productList => {
+    const { match } = this.props;
     const output = productList.map(e =>
       e.products.map(p => (
-        <ProductDetails key={key()}>
-          <div className="hover__image">
-            <div className="hover__image-off">
-              <img
-                src={`https://www.jcrew.com/s7-img-facade/${p.productCode}_${p.defaultColorCode}_d1`}
-                alt={p.productDescription}
-              />
+        <Link to={`/${match.params.gender}/${p.productCode}`} key={key()}>
+          <ProductDetails>
+            <div className="hover__image">
+              <div className="hover__image-off">
+                <img
+                  src={`https://www.jcrew.com/s7-img-facade/${p.productCode}_${p.defaultColorCode}_d1`}
+                  alt={p.productDescription}
+                />
+              </div>
+              <div className="hover__image-on">
+                <img
+                  src={`https://www.jcrew.com/s7-img-facade/${p.productCode}_${p.defaultColorCode}_d2`}
+                  alt={p.productDescription}
+                />
+              </div>
             </div>
-            <div className="hover__image-on">
-              <img
-                src={`https://www.jcrew.com/s7-img-facade/${p.productCode}_${p.defaultColorCode}_d2`}
-                alt={p.productDescription}
-              />
-            </div>
-          </div>
-          <div className="product__brand">{p.brand}</div>
-          <div className="product__price">{p.listPrice.formatted}</div>
-          <div className="product__desc">{p.productDescription}</div>
-        </ProductDetails>
+            <div className="product__brand">{p.brand}</div>
+            <div className="product__price">{p.listPrice.formatted}</div>
+            <div className="product__desc">{p.productDescription}</div>
+          </ProductDetails>
+        </Link>
       ))
     );
     return <ProductsWrapper>{output}</ProductsWrapper>;

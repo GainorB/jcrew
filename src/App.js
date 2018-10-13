@@ -25,7 +25,6 @@ class App extends Component {
   fetchNav = async () => {
     try {
       const { nav } = await api.fetchNavLinks();
-      console.log('nav', nav);
       this.setState({ navLoaded: true, navItems: nav[0].navGroups[0].navItems });
     } catch (error) {
       console.log(error);
