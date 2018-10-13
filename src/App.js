@@ -4,11 +4,13 @@ import { Switch, Route, Link } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './components/Home';
 import Products from './components/Products';
+import ProductPage from './components/ProductPage';
 // CSS
 import './App.css';
 import { Navigation, NavItem } from './components/Styled';
 // UTILS
 import { key, removeWhiteSpace } from './components/utils';
+import api from './components/utils/api';
 
 class App extends Component {
   state = {
@@ -21,16 +23,9 @@ class App extends Component {
   };
 
   fetchNav = async () => {
-    const PROXY = 'https://cors-anywhere.herokuapp.com/';
-    const ENDPOINT = 'https://www.jcrew.com/data/v1/US/navigation';
     try {
-      const request = await fetch(PROXY + ENDPOINT, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-      });
-      const { nav } = await request.json();
+      const { nav } = await api.fetchNavLinks();
+      console.log('nav', nav);
       this.setState({ navLoaded: true, navItems: nav[0].navGroups[0].navItems });
     } catch (error) {
       console.log(error);
@@ -57,6 +52,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/:gender" render={props => <Products {...props} />} />
+          <Route exact path="/:gender/:productCode" render={props => <ProductPage {...props} />} />
         </Switch>
       </Fragment>
     );

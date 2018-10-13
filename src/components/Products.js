@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // UTILS
 import { key } from './utils';
+import api from './utils/api';
 
 // CSS
 import { ProductsWrapper, ProductDetails } from './Styled';
@@ -26,22 +27,15 @@ class Products extends Component {
   componentDidUpdate = prevProps => {
     const { match } = this.props;
     if (match.params.gender !== prevProps.match.params.gender) {
+      this.setState({ productsLoaded: false });
       const parseGender = this.handleGender(match.params.gender);
       this.fetchProducts(parseGender);
     }
   };
 
   fetchProducts = async gender => {
-    const PROXY = 'https://cors-anywhere.herokuapp.com/';
-    const ENDPOINT = `https://www.jcrew.com/data/v1/US/enhance-category/c/${gender}_feature/newarrivals`;
     try {
-      const request = await fetch(PROXY + ENDPOINT, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-      });
-      const { productList } = await request.json();
+      const { productList } = await api.fetchProducts(gender);
       this.setState({ productsLoaded: true, productList });
     } catch (error) {
       console.log('error', error);
@@ -64,7 +58,6 @@ class Products extends Component {
   };
 
   parseProducts = productList => {
-    console.log('productList', productList);
     const output = productList.map(e =>
       e.products.map(p => (
         <ProductDetails key={key()}>

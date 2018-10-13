@@ -4,7 +4,7 @@ import logo from '../jcrew.png';
 
 const Header = () => (
   <Link to="/">
-    <img src={logo} alt="Jcrew" />
+    <img src={logo} alt="Jcrew" style={{ margin: '10px' }} />
   </Link>
 );
 
