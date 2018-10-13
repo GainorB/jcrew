@@ -11,4 +11,3 @@
 2. React Router
 3. Styled Components
 4. Fetch API
-5. React Router
