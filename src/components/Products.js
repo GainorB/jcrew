@@ -17,11 +17,23 @@ class Products extends Component {
     productList: null,
   };
 
-  componentDidMount = async () => {
-    const { gender } = this.props.match.params;
-    const parseGender = this.handleGender(gender);
+  componentDidMount = () => {
+    const { match } = this.props;
+    const parseGender = this.handleGender(match.params.gender);
+    this.fetchProducts(parseGender);
+  };
+
+  componentDidUpdate = prevProps => {
+    const { match } = this.props;
+    if (match.params.gender !== prevProps.match.params.gender) {
+      const parseGender = this.handleGender(match.params.gender);
+      this.fetchProducts(parseGender);
+    }
+  };
+
+  fetchProducts = async gender => {
     const PROXY = 'https://cors-anywhere.herokuapp.com/';
-    const ENDPOINT = `https://www.jcrew.com/data/v1/US/enhance-category/c/${parseGender}_feature/newarrivals`;
+    const ENDPOINT = `https://www.jcrew.com/data/v1/US/enhance-category/c/${gender}_feature/newarrivals`;
     try {
       const request = await fetch(PROXY + ENDPOINT, {
         headers: {
@@ -30,16 +42,11 @@ class Products extends Component {
         method: 'GET',
       });
       const { productList } = await request.json();
-      this.setStateAsync({ productsLoaded: true, productList });
+      this.setState({ productsLoaded: true, productList });
     } catch (error) {
       console.log('error', error);
     }
   };
-
-  setStateAsync = state =>
-    new Promise(resolve => {
-      this.setState(state, resolve);
-    });
 
   handleGender = gender => {
     switch (gender) {

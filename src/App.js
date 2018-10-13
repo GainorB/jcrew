@@ -31,7 +31,7 @@ class App extends Component {
         method: 'GET',
       });
       const { nav } = await request.json();
-      this.setStateAsync({ navLoaded: true, navItems: nav[0].navGroups[0].navItems });
+      this.setState({ navLoaded: true, navItems: nav[0].navGroups[0].navItems });
     } catch (error) {
       console.log(error);
     }
@@ -47,11 +47,6 @@ class App extends Component {
 
     return <Navigation>{output}</Navigation>;
   };
-
-  setStateAsync = state =>
-    new Promise(resolve => {
-      this.setState(state, resolve);
-    });
 
   render() {
     const { navLoaded } = this.state;
