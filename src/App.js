@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { v1 } from 'uuid';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 // COMPONENTS
 import Header from './components/Header';
 import Home from './components/Home';
@@ -8,6 +7,8 @@ import Products from './components/Products';
 // CSS
 import './App.css';
 import { Navigation, NavItem } from './components/Styled';
+// UTILS
+import { key, removeWhiteSpace } from './components/utils';
 
 class App extends Component {
   state = {
@@ -38,8 +39,11 @@ class App extends Component {
 
   buildNav = () => {
     const { navItems } = this.state;
-    console.log('navItems', navItems);
-    const output = navItems.map(n => <NavItem key={v1()}>{n.label}</NavItem>);
+    const output = navItems.map(n => (
+      <NavItem key={key()}>
+        <Link to={`/${removeWhiteSpace(n.label)}`}>{n.label}</Link>
+      </NavItem>
+    ));
 
     return <Navigation>{output}</Navigation>;
   };
@@ -57,6 +61,7 @@ class App extends Component {
         {navLoaded ? this.buildNav() : 'Loading nav..'}
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/:gender" render={props => <Products {...props} />} />
         </Switch>
       </Fragment>
     );
