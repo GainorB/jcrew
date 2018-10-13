@@ -19,4 +19,24 @@ export const ProductDetails = styled.div`
     height: 100%;
     object-fit: cover;
   }
+
+  .hover__image .hover__image-on,
+  .hover__image:hover .hover__image-off {
+    display: none;
+  }
+
+  .hover__image:hover .hover__image-on {
+    display: inline;
+  }
+
+  .product__brand,
+  .product__price,
+  .product__desc {
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .product__desc {
+    font-weight: bold;
+  }
 `;
